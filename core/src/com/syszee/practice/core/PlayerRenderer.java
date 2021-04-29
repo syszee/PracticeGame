@@ -1,9 +1,6 @@
 package com.syszee.practice.core;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.syszee.practice.entities.Player;
 
 public class PlayerRenderer {
@@ -22,6 +19,8 @@ public class PlayerRenderer {
     private Animation walkLeftAnim, walkRightAnim,
             idleLeftAnim, idleRightAnim,
             peckLeftAnim, peckRightAnim;
+
+    Sprite sprite = new Sprite();
 
 
     public PlayerRenderer(TextureAtlas atlas){
@@ -103,12 +102,17 @@ public class PlayerRenderer {
 
         // Return Draw
         float sizeOffset = Math.nextUp((Player.SCALE-Player.SIZE)/2);
-        batch.draw(playerFrame, player.getPosition().x - sizeOffset, player.getPosition().y - sizeOffset, Player.SCALE, Player.SCALE);
 
+        //batch.draw(playerFrame, player.getPosition().x - sizeOffset, player.getPosition().y - sizeOffset, Player.SCALE, Player.SCALE);
+        sprite.setRegion(playerFrame);
+        sprite.setPosition(player.getPosition().x - sizeOffset, player.getPosition().y - sizeOffset);
+        sprite.setSize(Player.SCALE, Player.SCALE);
     }
 
     public void dispose(){
         atlas.dispose();
     }
+
+    public Sprite getSprite(){return sprite;}
 
 }

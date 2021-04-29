@@ -29,6 +29,7 @@ public class WorldRenderer {
     private float shakeX, shakeY = 0F;
 
     private SpriteBatch spriteBatch;
+    private Array<Sprite> sprites = new Array<Sprite>();
     ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     // World Textures
@@ -70,34 +71,62 @@ public class WorldRenderer {
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
         drawBlocks(0, delta);
-
-        // RENDER ENEMIES
+        // UPDATE PLAYER, NOT RENDERING
         playerRenderer.renderPlayer(world.getPlayer(), spriteBatch, ppuX, ppuY);
 
+        /** HANDLE SPRITES **/
+        handleSprites(delta);
+
+        drawBlocks(1, delta);
+        particleRenderer.renderParticles(particles, spriteBatch);
+        spriteBatch.end();
+
+    }
+
+    /** SPRITE ARRAY HANDLER **/
+    public void handleSprites(float delta){
+        // CLEAR SPRITES
+        sprites.clear();
+
+        // GET ENEMIES
         for(Enemy enemy : world.getEnemies()){
             if(enemy == null) continue;
             else {
                 enemy.render(spriteBatch);
                 enemy.update(delta);
-                if(world.getPlayer().getPosition().y < enemy.getPosition().y)
-                    playerRenderer.renderPlayer(world.getPlayer(), spriteBatch, ppuX, ppuY);
+                //if(world.getPlayer().getPosition().y < enemy.getPosition().y)
+                    //playerRenderer.renderPlayer(world.getPlayer(), spriteBatch, ppuX, ppuY);
+                sprites.add(enemy.getSprite());
             }
         }
 
-
-
-        // RENDER EGGS
+        // GET EGGS
         for(Egg egg : world.getEggs()){
             if(egg == null) continue;
             else {
                 egg.render(spriteBatch);
                 egg.update(delta);
+                sprites.add(egg.getSprite());
             }
         }
 
-        drawBlocks(1, delta);
-        particleRenderer.renderParticles(particles, spriteBatch);
-        spriteBatch.end();
+        // GET PLAYER
+        sprites.add(playerRenderer.getSprite());
+
+        // SORT SPRITES BY Y-VALUE
+        sprites.sort(new Comparator<Sprite>() {
+            @Override
+            public int compare(Sprite s1, Sprite s2) {
+                return Float.compare(s2.getY(), s1.getY());
+            }
+        });
+
+        // DRAW SPRITES
+        for(Sprite s : sprites){
+            if(s != null){
+                s.draw(spriteBatch);
+            }
+        }
 
     }
 
