@@ -1,9 +1,6 @@
 package com.syszee.practice.entities;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -46,6 +43,7 @@ public class Enemy {
     TextureRegion       enemyFrame;
     Animation           enemyIdleLeft, enemyIdleRight;
     Animation           enemyWalkLeft, enemyWalkRight;
+    Sprite              sprite = new Sprite();
     float               IDLE_FRAME_DURATION = 0.1F;
     float               WALK_FRAME_DURATION = 0.1F;
 
@@ -137,7 +135,10 @@ public class Enemy {
                     : (TextureRegion) enemyWalkRight.getKeyFrame(stateTime, true);
         }
 
-        spriteBatch.draw(enemyFrame, position.x, position.y, renderWidth, renderHeight);
+        //spriteBatch.draw(enemyFrame, position.x, position.y, renderWidth, renderHeight);
+        sprite.setPosition(position.x, position.y);
+        sprite.setSize(renderWidth, renderHeight);
+        sprite.setRegion(enemyFrame);
 
     }
 
@@ -220,6 +221,7 @@ public class Enemy {
     public float getStateTime(){return stateTime;}
     public float getRenderWidth(){return renderWidth;}
     public float getRenderHeight(){return renderHeight;}
+    public Sprite getSprite(){return sprite;}
 
     /**
      * COLLISION HANDLING

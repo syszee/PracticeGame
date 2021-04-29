@@ -3,10 +3,7 @@ package com.syszee.practice.entities;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -43,6 +40,7 @@ public class Egg {
     float           stateTime = 0;
     TextureRegion   eggFrame;
     Animation       eggAnim;
+    Sprite          sprite = new Sprite();
 
     // CONTAINER
     Array<Egg> container;
@@ -127,7 +125,10 @@ public class Egg {
                 break;
         }
 
-        spriteBatch.draw(eggFrame, position.x, position.y, SIZE, SIZE);
+        //spriteBatch.draw(eggFrame, position.x, position.y, SIZE, SIZE);
+        sprite.setPosition(position.x, position.y);
+        sprite.setSize(SIZE, SIZE);
+        sprite.setRegion(eggFrame);
 
     }
 
@@ -161,6 +162,7 @@ public class Egg {
     public boolean shouldRemove(){return shouldRemove;}
     public Rectangle getExplosionBound(){return explosionBound;}
     public boolean shouldExplode(){return explode;}
+    public Sprite getSprite(){ return sprite;}
 
     // HANDLE REMOVAL
     public void remove(){
