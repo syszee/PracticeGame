@@ -89,6 +89,7 @@ public class GameScreen implements Screen, InputProcessor {
         if(keycode == Input.Keys.DOWN || keycode == Input.Keys.S) controller.downPressed();
         if(keycode == Input.Keys.SPACE) controller.spacePressed();
         if(keycode == Input.Keys.SHIFT_LEFT) controller.shiftPressed();
+        if(keycode == Input.Keys.CONTROL_LEFT) controller.leftCtrlPressed();
 
         // Debug
         if(keycode == Input.Keys.F3){
@@ -106,6 +107,7 @@ public class GameScreen implements Screen, InputProcessor {
         if(keycode == Input.Keys.DOWN || keycode == Input.Keys.S) controller.downReleased();
         if(keycode == Input.Keys.SPACE) controller.spaceReleased();
         if(keycode == Input.Keys.SHIFT_LEFT) controller.shiftReleased();
+        if(keycode == Input.Keys.CONTROL_LEFT) controller.leftCtrlReleased();
         return true;
     }
 

@@ -16,7 +16,6 @@ import com.syszee.practice.entities.Particle;
 import com.syszee.practice.entities.Player;
 import com.syszee.practice.worlds.World;
 
-import javax.xml.soap.Text;
 import java.util.Comparator;
 import java.util.Random;
 
@@ -37,8 +36,8 @@ public class WorldRenderer {
     TextureRegion grassBlock, signBlock, rockBlock, rockBigBlock;
 
 
-    public static final float CAMERA_WIDTH = 8F;
-    public static final float CAMERA_HEIGHT = 4.5F;
+    public static final float CAMERA_WIDTH = 16F;
+    public static final float CAMERA_HEIGHT = 9F;
     private int width, height;
     private float ppuX, ppuY;
 
@@ -71,6 +70,8 @@ public class WorldRenderer {
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
         drawBlocks(0, delta);
+
+        particleRenderer.renderParticles(particles, spriteBatch);
         // UPDATE PLAYER, NOT RENDERING
         playerRenderer.renderPlayer(world.getPlayer(), spriteBatch, ppuX, ppuY);
 
@@ -78,7 +79,6 @@ public class WorldRenderer {
         handleSprites(delta);
 
         drawBlocks(1, delta);
-        particleRenderer.renderParticles(particles, spriteBatch);
         spriteBatch.end();
 
     }

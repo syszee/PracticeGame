@@ -13,11 +13,14 @@ public class Player {
 
     // Properties
     public static float SPEED = 35F;
+    public static float BASE_SPEED = 35F;
+    public static float RUN_SPEED_MODIFIER = 30F;
     public static final float DAMP = 0.8F;
     public static final float MAX_VELOCITY = 20f;
     public static final float SIZE = 0.8F;
     public static final float SCALE = 1F;
     public static float PECK_POWER = 0.1F;
+    public boolean RUNNING = false;
 
     Vector2 position;
     Vector2 acceleration = new Vector2();
@@ -50,6 +53,13 @@ public class Player {
 
     public void update(float delta){
         stateTime += delta;
+
+        // Running
+        if(RUNNING){
+            setSpeed(BASE_SPEED + RUN_SPEED_MODIFIER);
+        }else{
+            setSpeed(BASE_SPEED);
+        }
 
         // Idle Sit Timer
         if(state.equals(State.IDLE) || state.equals(State.IDLE_SIT)){
@@ -101,8 +111,11 @@ public class Player {
         if(state.equals(State.WALKING)) {
             soundTimer++;
             if (soundTimer == 5) SoundManager.WALKING_GRASS.play(0.15F, pitchShift - 0.2F, 1F);
-            if (soundTimer >= 20)
-                soundTimer = 0;
+            if(!RUNNING){
+                if (soundTimer >= 20) soundTimer = 0;
+            }else if(RUNNING){
+                if (soundTimer >= 15) soundTimer = 0;
+            }
         }
 
         // PECKING
@@ -131,13 +144,15 @@ public class Player {
     public State getState() { return state;}
     public float getPeckPower() {return PECK_POWER;}
     public void setPeckPower(float power) {PECK_POWER = power;}
-
     public void setState(State state){this.state = state;}
     public void setPosition(Vector2 position){
         this.position = position;
         this.bounds.setX(position.x);
         this.bounds.setY(position.y);
     }
+
+    public boolean isRunning(){return RUNNING;}
+    public void setRunning(boolean b){RUNNING = b;}
 
     // GET VALUES
     public int getHealth(){return health;}

@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
-import com.sun.glass.ui.EventLoop;
 import com.syszee.practice.blocks.Block;
 import com.syszee.practice.core.SoundManager;
 import com.syszee.practice.entities.Egg;
@@ -19,7 +18,7 @@ import java.util.Map;
 public class WorldController {
 
     enum Keys {
-        LEFT, RIGHT, UP, DOWN, SPACE, SHIFT
+        LEFT, RIGHT, UP, DOWN, SPACE, SHIFT, LEFT_CTRL
     }
 
     private World world;
@@ -34,6 +33,7 @@ public class WorldController {
       keys.put(Keys.UP, false);
       keys.put(Keys.SPACE, false);
       keys.put(Keys.SHIFT, false);
+      keys.put(Keys.LEFT_CTRL, false);
     };
 
     // This rectangle pool is used in collision detection
@@ -67,6 +67,10 @@ public class WorldController {
     public void spaceReleased(){keys.put(Keys.SPACE, false);}
     public void shiftReleased(){keys.put(Keys.SHIFT, false);}
 
+    // RUNNING
+    public void leftCtrlPressed(){keys.put(Keys.LEFT_CTRL, true);}
+    public void leftCtrlReleased(){keys.put(Keys.LEFT_CTRL, false);}
+
     public void update(float delta){
         processInput();
 
@@ -88,6 +92,8 @@ public class WorldController {
             particle.update(delta);
             if(particle.checkRemoval()) particles.removeValue(particle, true);
         }
+
+        handleRunning();
 
     }
 
@@ -183,6 +189,12 @@ public class WorldController {
 
     private void processInput(){
 
+        if(keys.get(Keys.LEFT_CTRL) && (player.getState() == Player.State.WALKING)){
+            if(!keys.get(Keys.SPACE) && !keys.get(Keys.SHIFT)){
+                player.setRunning(true);
+            }
+        }else player.setRunning(false);
+
         if(keys.get(Keys.LEFT)){
             if(!keys.get(Keys.SPACE) && !keys.get(Keys.SHIFT)){
                 player.setState(Player.State.WALKING);
@@ -259,6 +271,16 @@ public class WorldController {
                 particles.add(new Particle(new Vector2(x, y), Particle.ParticleType.BLOCK_BREAK, 1F, 1F));
                 world.getLevel().getBlocks()[x][y] = null;
             }
+        }
+    }
+
+    public void handleRunning(){
+        if(player.isRunning()){
+            particles.add(new Particle(
+                    new Vector2((int)player.getPosition().x, (int)player.getPosition().y),
+                    Particle.ParticleType.BLOCK_BREAK,
+                    1F,
+                    1F));
         }
     }
 

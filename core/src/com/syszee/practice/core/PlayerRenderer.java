@@ -8,8 +8,13 @@ public class PlayerRenderer {
     TextureAtlas atlas;
 
     private static final float IDLE_FRAME_DURATION = 0.25F;
-    private static final float RUNNING_FRAME_DURATION = 0.10F;
     private static final float PECKING_FRAME_DURATION = 0.1F;
+
+
+    private static final float WALKING_DURATION = 0.10F;
+    private static final float RUNNING_FRAME_DURATION = 0.10F;
+    private static final float RUNNING_DURATION = 0.05F;
+
 
     // Texture Regions
     private TextureRegion playerIdleLeft, playerIdleRight,
